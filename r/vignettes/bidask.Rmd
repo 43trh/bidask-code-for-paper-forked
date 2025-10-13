@@ -86,9 +86,18 @@ The function `spread()` provides additional functionalities for [xts](https://cr
 
 ```{r}
 library(quantmod)
-x <- getSymbols("MSFT", auto.assign = FALSE, start = "2019-01-01", end = "2022-12-31")
-head(x)
+x <- try(getSymbols("MSFT", auto.assign = FALSE, start = "2019-01-01", end = "2022-12-31"), silent = TRUE)
+if("try-error" %in% class(x)){
+  print("Error in getSymbols; using syntentic data instead")
+  x <- sim(5000, units = "day")
+}
+```
+```{r}
 class(x)
+```
+
+```{r}
+head(x)
 ```
 
 Estimate the spread with:
